@@ -1,45 +1,62 @@
 //dp
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
+#include<vector>
+#include<list>
+#include<deque>
+#include<queue>
+#include<stack>
+#include<map>
+#include<set>
+#include<bitset>
+#include<algorithm>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<cctype>
+#include<cmath>
+#include<iostream>
 
-#define MAX 110
+using namespace std;
+typedef long long ll;
+#define cls(x) memset(x,0,sizeof(x))
 
-int data[MAX][MAX];
 
-int max_array(int *a, size_t n) {
-	int dp[MAX];
-	memset(dp, -200, sizeof(dp));
-	dp[0] = a[0];
-	int max_sum = dp[0];
-	for (int i = 1; i < n; i++) {
-		dp[i] = std::max(a[i], dp[i-1] + a[i]);
-		max_sum = std::max(max_sum, dp[i]);
+const int N = 200;
+const int MAX = 0;
+int temp[N];
+int mat[N][N];
+
+int maxsub(int *arr, int n) {
+	int ans = arr[0];
+	int maxend = arr[0];
+	for (int i = 1; i < n; ++i) {
+		if (maxend < 0) {
+			maxend = arr[i];
+		} else {
+			maxend = arr[i] + maxend;
+		}
+		ans = max(ans, maxend);
 	}
-	return max_sum;
+	return ans;
 }
 
 int main() {
-	size_t n;
-	std::cin >> n;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			std::cin >> data[i][j];
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			cin >> mat[i][j];
 		}
 	}
-
-	int tmp_sum[MAX];
-	int max_matrix = data[0][0];
-	for (int top_line = 0; top_line < n; top_line++) {
-		memset(tmp_sum, 0, sizeof(tmp_sum));
-		for (int end_line = top_line; end_line < n; end_line++) {
-			for (int k = 0; k < n; k++){
-				tmp_sum[k] += data[end_line][k];
+	int ret = -MAX;
+	for (int top = 0; top < n; ++top) {
+		cls(temp);
+		for (int bottom = top; bottom < n; ++bottom) {
+			for (int j = 0; j < n; ++j) {
+				temp[j] += mat[bottom][j];
 			}
-			max_matrix = std::max(max_matrix, max_array(tmp_sum, n));
+			ret = max(ret, maxsub(temp,n));
 		}
 	}
-	std::cout << max_matrix << std::endl;
+	cout << ret << endl;
 	return 0;
 }

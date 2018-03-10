@@ -1,4 +1,6 @@
 a.out
 input.txt
-test.sh
 .ycm_extra_conf.py
+test.sh
+*.o
+TODO

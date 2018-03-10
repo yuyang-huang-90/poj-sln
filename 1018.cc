@@ -1,65 +1,72 @@
-#include<cstdio>
+//TYPE
+#include<vector>
+#include<list>
+#include<deque>
+#include<queue>
+#include<stack>
+#include<map>
+#include<set>
+#include<bitset>
 #include<algorithm>
+#include<cstdio>
+#include<cstdlib>
 #include<cstring>
+#include<cctype>
+#include<cmath>
+#include<iostream>
 
-#define MAX_SIZE 1100
-#define LEVEL 110
+using namespace std;
+typedef long long ll;
+#define cls(x) memset(x,0,sizeof(x))
 
-int dp[LEVEL][MAX_SIZE];
-int current_bw[110];
-int current_price[110];
 
-void solve(void) {
-	int n, m;
-	int bw, price, maxbw = -1;
-	memset(dp, -1, sizeof(dp));
-	scanf("%d",&n);
-	for (int t = 0; t < n; t++) {
-		scanf("%d",&m);
-		for (int i = 0; i < m; i++) {
-			scanf("%d %d", &bw, &price);
-			//printf("%d %d ", bw, price);
-			current_bw[i] = bw;
-			current_price[i] = price;
-			//printf("%d %d ", current_bw[i], current_price[i]);
-			if (t == 0) {
-				maxbw = std::max(maxbw, bw);
-				dp[0][bw] = price;
-				//printf(" (%d) ", maxbw);
+
+const int MAXN = 110;
+const int MAXW = 1200;
+
+int dp[MAXN][MAXW];
+int bw[MAXN];
+int p[MAXN];
+const int INF = 0x3f3f3f3f;
+
+
+int main() {
+	int t;
+	cin >> t;
+	while (t--) {
+		int n, m;
+		cin >> n;
+		memset(dp,0x3f,sizeof(dp));
+		int maxbw = -1;;
+		for (int i = 1; i <= n; ++i) {
+			scanf("%d", &m);
+			for (int j = 1; j <= m; ++j) {
+				scanf("%d %d",&bw[j], &p[j]);
+				maxbw = max(maxbw, bw[j]);
 			}
-		}
-		//printf("\n");
-		if (t == 0) continue;
-		for(int j = 0; j <= maxbw; j++) {
-			if (dp[t-1][j] != -1) {
-				for (int k = 0; k < m; k++) {
-					int min_bw = std::min(j, current_bw[k]);
-					if (dp[t][min_bw] == -1) {
-						dp[t][min_bw] = dp[t-1][j] + current_price[k];
-					} else {
-						dp[t][min_bw] = std::min(dp[t][min_bw], dp[t-1][j] + current_price[k]);
+			if (i == 1) {
+				for (int j = 1; j <=m; ++j) {
+					dp[1][bw[j]] = p[j];
+				}
+				continue;
+			}
+			for (int w = 0; w <= maxbw; ++w) {
+				if (dp[i-1][w] != INF) {
+					for (int k = 1; k <= m; ++k) {
+						if (dp[i-1][w] + p[k] < dp[i][min(w,bw[k])]) {
+							dp[i][min(w,bw[k])] = dp[i-1][w] + p[k];
+						}
 					}
 				}
 			}
 		}
-	}
-	//print_dp(maxbw);
-
-	double r = 0;
-	for (int i = 0; i <= maxbw; i++) {
-		if (dp[n-1][i] != -1) {
-			//printf("bw:%d  price:%d\n", i, dp[n-1][i]);
-			//printf("%f\n", 1.0 * i / dp[n-1][i]);
-			r = std::max(r, 1.0 * i / dp[n-1][i]);
+		double ans = -1;
+		for(int w = 0; w <= maxbw; w++) {
+			if(dp[n][w] != INF) {
+				ans = max(ans, (double)w / dp[n][w]);
+			}
 		}
+		printf("%.3f\n", ans);
 	}
-	printf("%.3f\n", r);
-}
-
-int main() {
-	int t;
-	scanf("%d",&t);
-	while(t-- > 0) {
-		solve();
-	}
+	return 0;
 }

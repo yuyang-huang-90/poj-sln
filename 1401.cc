@@ -1,4 +1,4 @@
-//TYPE
+//math
 #include<vector>
 #include<list>
 #include<deque>
@@ -20,9 +20,22 @@ typedef long long ll;
 #define cls(x) memset(x,0,sizeof(x))
 
 
-const int INF = 0x3f3f3f3f;
-const int SZ = 100;
+const int MAX = 10000;
 
 int main() {
+	int T;
+	cin >> T;
+	long long int  N;
+	for (int i = 0; i < T; i++)
+	{
+		cin >> N;
+		int ret = 0;
+		while (N)
+		{
+			ret = ret + N / 5;
+			N = N / 5;
+		}
+		cout << ret << endl;
+	}
 	return 0;
 }

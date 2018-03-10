@@ -1,4 +1,4 @@
-//mst
+//kruskal
 #include<vector>
 #include<list>
 #include<deque>
@@ -19,21 +19,24 @@ using namespace std;
 typedef long long ll;
 #define cls(x) memset(x,0,sizeof(x))
 
-struct edge {
-	int u,v,cost;
-	bool operator < (const edge &e) const {
-		return cost < e.cost;
-	}
+struct Edge {
+	int a;
+	int b;
+	int l;
 };
 
-int N, E;
+const int L = 200;
 
-edge edges[10000];
-int parent[100];
-int height[100];
+int parent[L];
+int height[L];
 
+Edge edge[6000];
 
-const int MAX = 10000;
+int g[L][L];
+
+int N = 200;
+int n;
+
 
 void init() {
 	for (int i = 0; i < N; ++i) {
@@ -54,10 +57,10 @@ bool same(int a, int b) {
 	return find(a) == find(b);
 }
 
-void unite(int a, int b) {
+bool unite(int a, int b) {
 	a = find(a);
 	b = find(b);
-	if (a == b) return;
+	if (a == b) return false;
 
 	if (height[a] < height[b])
 		parent[a] = b;
@@ -66,39 +69,43 @@ void unite(int a, int b) {
 		if (height[a] == height[b])
 			height[a]++;
 	}
+	return true;
 }
 
-int kruskal() {
-	sort(edges, edges+E);
-	init();
-	int ret = 0;
-	for (int i = 0; i < E; ++i) {
-		edge &cur = edges[i];
-		if (!same(cur.u, cur.v)) {
-			unite(cur.u, cur.v);
-			ret += cur.cost;
-		}
-	}
-	return ret;
+bool cmp(const Edge &a, const Edge &b) {
+	return a.l < b. l;
 }
 
 int main() {
-	while (scanf("%d", &N) != EOF) {
+	while (scanf("%d", &n) != EOF) {
 		int idx = 0;
-		for (int i = 0; i < N; ++i) {
-			for (int j = 0 ; j < N; ++j) {
-				int w;
-				cin >> w;
-				if (i != j) {
-					edges[idx].u = i;
-					edges[idx].v = j;
-					edges[idx].cost = w;
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < n; ++j) {
+				cin >> g[i][j];
+				if (i < j) {
+					edge[idx].l = g[i][j];
+					edge[idx].a = i;
+					edge[idx].b = j;
 					idx++;
 				}
 			}
 		}
-		E = idx;
-		printf("%d\n", kruskal());
+		sort(edge, edge + idx, cmp);
+		init();
+		int m;
+		cin >> m;
+		for (int i = 0; i < m; ++i) {
+			int a, b;
+			cin >> a >> b;
+			unite(a-1, b-1);
+		}
+		int ans = 0;
+		for (int i = 0; i < idx; ++i) {
+			if (unite(edge[i].a, edge[i].b)) {
+				ans += edge[i].l;
+			}
+		}
+		cout << ans << endl;
 	}
 	return 0;
 }
