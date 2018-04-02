@@ -1,4 +1,4 @@
-#include<cstdio>
+#include<stdio.h>
 #include<algorithm>
 #include<cstring>
 #include<cstdlib>
@@ -17,6 +17,7 @@ int mod(int m, int k){
 
 
 int main() {
+	freopen("input.txt","r",stdin);
 	int a[MAX_N];
 	int n, k;
 	memset(dp, 0 , sizeof(dp));

@@ -1,4 +1,6 @@
 a.out
+*.exe
+.vscode/*
 input.txt
 .ycm_extra_conf.py
 test.sh
