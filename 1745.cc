@@ -27,7 +27,7 @@ int main() {
 		scanf("%d", &a[i]);
 	}
 	dp[0][mod(a[0], k)] = 1;
-
+	
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < k; j++) {
 			if (dp[i-1][j]) {
