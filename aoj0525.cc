@@ -1,4 +1,4 @@
-//TYPE
+//enumerate
 #include<vector>
 #include<list>
 #include<deque>
@@ -47,7 +47,47 @@ const int MAX_M = 50005;
 
 typedef pair<int, int> P;
 
+bitset<10000> cookie[10];
+int R = -1, C = -1;
+
+void do_flip(int conf) {
+  forn(j, R) {
+    if((conf >> j) & 1) {
+      cookie[j].flip();
+    }
+  }
+}
+
 int main() {
-	cout << "helloworld" << endl;
+  while(1) {
+    cin >> R >> C;
+    if( R == 0 && C == 0) break;
+    forn(i, R) {
+      forn(j, C) {
+        int up;
+        cin >> up;
+        cookie[i][j] = up;
+      }
+    }
+
+    int total = 1 << R;
+    int ret = 0;
+    forn(i, total) {
+      do_flip(i);
+      int cur = 0;
+      forn(j, C) {
+        int cnt = 0;
+        forn(k, R) {
+          if(cookie[k][j]) {
+            cnt++;
+          }
+        }
+        cur += max(cnt, R-cnt);
+      }
+      do_flip(i);
+      ret = max(ret, cur);
+    }
+    cout << ret << endl;
+  }
 	return 0;
 }
