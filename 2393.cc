@@ -1,4 +1,4 @@
-//TYPE
+//greedy
 #include<vector>
 #include<list>
 #include<deque>
@@ -18,7 +18,7 @@
 #include<limits>
 #include<utility>
 
-#define c11
+//#define c11
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -34,9 +34,9 @@ typedef long long ll;
 #define forn(i, n) for(int i = 0; i < (int) n; ++i)
 #define for1(i, n) for(int i = 1; i <= (int) n; ++i)
 #define fore(i, l, r) for(int i = (int) l; i <= (int) r; ++i)
-#define rforn(i, n) for(int i = (int) n - 1; i>= 0; --i)
-#define fi first
-#define se second
+#define rforn(i, n) for(int i = (int) n - 1; i>= 0; ++i)
+#define first fi
+#define second se
 
 int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
@@ -48,6 +48,16 @@ const int MAX_M = 50005;
 typedef pair<int, int> P;
 
 int main() {
-	cout << "helloworld" << endl;
+  int n, s;
+  cin >> n >> s;
+  ll costs = 0;
+  int p = INF;
+  forn(i, n) {
+    int c,  y;
+    cin >> c >> y;
+    p = min(p + s, c);
+    costs += p * y;
+  }
+  cout << costs << endl;
 	return 0;
 }

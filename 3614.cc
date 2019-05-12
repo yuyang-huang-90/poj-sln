@@ -1,4 +1,4 @@
-//TYPE
+//priority queue
 #include<vector>
 #include<list>
 #include<deque>
@@ -18,7 +18,7 @@
 #include<limits>
 #include<utility>
 
-#define c11
+//#define c11
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -34,7 +34,7 @@ typedef long long ll;
 #define forn(i, n) for(int i = 0; i < (int) n; ++i)
 #define for1(i, n) for(int i = 1; i <= (int) n; ++i)
 #define fore(i, l, r) for(int i = (int) l; i <= (int) r; ++i)
-#define rforn(i, n) for(int i = (int) n - 1; i>= 0; --i)
+#define rforn(i, n) for(int i = (int) n - 1; i>= 0; ++i)
 #define fi first
 #define se second
 
@@ -42,12 +42,43 @@ int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x7f7f7f7f;
-const int MAX_N = 100;
+const int MAX_N = 2600;
 const int MAX_M = 50005;
 
 typedef pair<int, int> P;
 
+P c[MAX_N];
+P l[MAX_N];
+
 int main() {
-	cout << "helloworld" << endl;
+  priority_queue<int, vector<int>, greater<int> > pq;
+  int m, n;
+  cin >> n >> m;
+  forn(i, n) {
+    scanf("%d%d", &c[i].fi, &c[i].se);
+  }
+  forn(i, m) {
+    scanf("%d%d", &l[i].fi, &l[i].se);
+  }
+  sort(c, c + n);
+  sort(l, l + m);
+  int j = 0;
+  int ans = 0;
+  forn(i, m) {
+    while(j < n && c[j].fi <= l[i].fi) {
+      pq.push(c[j].se);
+      j++;
+    }
+
+    while(!pq.empty() && l[i].se > 0) {
+      int tmp = pq.top(); pq.pop();
+      if(tmp >= l[i].fi) {
+        ++ans;
+        --l[i].se;
+      }
+
+    }
+  }
+  cout << ans << endl;
 	return 0;
 }
