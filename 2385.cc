@@ -1,4 +1,4 @@
-//TYPE
+//dp
 #include<vector>
 #include<list>
 #include<deque>
@@ -18,7 +18,7 @@
 #include<limits>
 #include<utility>
 
-#define c11
+//#define c11
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -42,34 +42,30 @@ int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x7f7f7f7f;
-const int MAX_N = 30;
-const int MAX_M = 5000;
+const int MAX_N = 2000;
+const int MAX_M = 40;
 
-int cost[MAX_N];
-int dp[MAX_M][MAX_M];
+int dp[MAX_N][MAX_M];
+int ap[MAX_N];
 
 typedef pair<int, int> P;
 
 int main() {
-	int n, m;
-	cin >> n >> m;
-	string s;
-	cin >> s;
-	forn(i, n) {
-		char c, add_cost, del_cost;
-		cin >> c >> add_cost >> del_cost;
-		cost[c - 'a'] = min(add_cost, del_cost);
-	}
-	rforn(i, m) {
-		for(int j = i + 1; j < m; ++j) {
-			if(s[i] == s[j]) {
-				dp[i][j] = min(dp[i][j], dp[i+1][j-1]);
-			} else {
-				dp[i][j] = min(dp[i+1][j] + cost[s[i] - 'a'], dp[i][j-1] + cost[s[j] - 'a']);
-			}
-		}
-	}
-	cout << dp[0][m-1] << endl;
-
+  int t, w;
+  cin >>t >> w;
+  for1(i, t) {
+    cin >> ap[i];
+    ap[i] -= 1;
+  }
+  for1(i, t) {
+    fore(j,0, w) {
+      if(j % 2) {
+        dp[i][j] = max(dp[i-1][j], dp[i-1][j-1]) + ap[i];
+      } else {
+        dp[i][j] = max(dp[i-1][j], dp[i-1][j-1]) + !ap[i];
+      }
+    }
+  }
+  cout << dp[t][w] << endl;
 	return 0;
 }

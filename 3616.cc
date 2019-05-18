@@ -1,4 +1,4 @@
-//TYPE
+//dp
 #include<vector>
 #include<list>
 #include<deque>
@@ -18,7 +18,7 @@
 #include<limits>
 #include<utility>
 
-#define c11
+/* #define c11 */
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -42,34 +42,41 @@ int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x7f7f7f7f;
-const int MAX_N = 30;
-const int MAX_M = 5000;
-
-int cost[MAX_N];
-int dp[MAX_M][MAX_M];
+const int MAX_N = 1500;
+const int MAX_M = 50005;
 
 typedef pair<int, int> P;
 
-int main() {
-	int n, m;
-	cin >> n >> m;
-	string s;
-	cin >> s;
-	forn(i, n) {
-		char c, add_cost, del_cost;
-		cin >> c >> add_cost >> del_cost;
-		cost[c - 'a'] = min(add_cost, del_cost);
+struct Interval
+{
+	int starting_hour, ending_hour, efficiency;
+	bool operator < (const Interval& i) const
+	{
+		return starting_hour < i.starting_hour;
 	}
-	rforn(i, m) {
-		for(int j = i + 1; j < m; ++j) {
-			if(s[i] == s[j]) {
-				dp[i][j] = min(dp[i][j], dp[i+1][j-1]);
-			} else {
-				dp[i][j] = min(dp[i+1][j] + cost[s[i] - 'a'], dp[i][j-1] + cost[s[j] - 'a']);
-			}
-		}
-	}
-	cout << dp[0][m-1] << endl;
+};
 
+Interval interval[MAX_N];
+int dp[MAX_N];
+
+int main() {
+  int n, m, r;
+  cin >> n >> m>> r;
+  forn(i, m) {
+    cin >> interval[i].starting_hour >> interval[i].ending_hour >> interval[i].efficiency;
+    interval[i].ending_hour += r;
+  }
+  sort(interval, interval + m);
+
+  forn(i, m) {
+    dp[i] = interval[i].efficiency;
+    forn(j, i) {
+      if(interval[j].ending_hour <= interval[i].starting_hour) {
+        dp[i] = max(dp[i], dp[j] + interval[i].efficiency);
+      }
+    }
+  }
+
+  cout << *max_element(dp, dp + m) << endl;
 	return 0;
 }

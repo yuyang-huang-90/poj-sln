@@ -1,4 +1,4 @@
-//TYPE
+//dp
 #include<vector>
 #include<list>
 #include<deque>
@@ -18,7 +18,7 @@
 #include<limits>
 #include<utility>
 
-#define c11
+//#define c11
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -42,34 +42,36 @@ int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x7f7f7f7f;
-const int MAX_N = 30;
-const int MAX_M = 5000;
+const int MAX_N = 100;
+const int MAX_M = 50005;
 
-int cost[MAX_N];
-int dp[MAX_M][MAX_M];
-
-typedef pair<int, int> P;
+int cost[32];
+int dp[2048][2048];
 
 int main() {
-	int n, m;
-	cin >> n >> m;
+	int N, M;
+	cin >> N >> M;
 	string s;
 	cin >> s;
-	forn(i, n) {
-		char c, add_cost, del_cost;
-		cin >> c >> add_cost >> del_cost;
-		cost[c - 'a'] = min(add_cost, del_cost);
+	for (int i = 0; i < N; ++i)
+	{
+		char c;
+		int add_cost, delete_cost;
+		cin >> c >> add_cost >> delete_cost;
+		cost[c - 'a'] = min(add_cost, delete_cost);
 	}
-	rforn(i, m) {
-		for(int j = i + 1; j < m; ++j) {
-			if(s[i] == s[j]) {
-				dp[i][j] = min(dp[i][j], dp[i+1][j-1]);
-			} else {
-				dp[i][j] = min(dp[i+1][j] + cost[s[i] - 'a'], dp[i][j-1] + cost[s[j] - 'a']);
-			}
+	for (int i = M - 1; i >= 0; --i)
+	{
+		for (int j = i + 1; j < M; ++j)
+		{
+			dp[i][j] = min(	dp[i + 1][j] + cost[s[i] - 'a'], dp[i][j - 1] + cost[s[j] - 'a']);
+			if (s[i] == s[j])
+			{
+				dp[i][j] = min(dp[i][j], dp[i + 1][j - 1]);
+			} 
 		}
 	}
-	cout << dp[0][m-1] << endl;
-
+ 
+	cout << dp[0][M - 1] << endl;
 	return 0;
 }
