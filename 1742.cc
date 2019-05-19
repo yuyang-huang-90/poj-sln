@@ -1,4 +1,4 @@
-//TYPE
+//dp
 #include<vector>
 #include<list>
 #include<deque>
@@ -9,16 +9,16 @@
 #include<set>
 #include<bitset>
 #include<algorithm>
-#include<cstdio>
 #include<cstdlib>
 #include<cstring>
+#include<cstdio>
 #include<cctype>
 #include<cmath>
 #include<iostream>
 #include<limits>
 #include<utility>
 
-#define c11
+//#define c11
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -42,12 +42,45 @@ int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x7f7f7f7f;
-const int MAX_N = 30;
-const int MAX_M = 5000;
+const int MAX_N = 100020;
+const int MAX_M = 110;
+
+int dp[MAX_N];
+int A[MAX_M];
+int C[MAX_M];
 
 typedef pair<int, int> P;
 
 int main() {
-	cout << "hello worlds" << endl;
+	int n, m;
+	while (scanf("%d%d", &n, &m) != EOF && n > 0)
+	{
+		for (int i = 0; i < n; ++i)
+		{
+			scanf("%d", &A[i]);
+		}
+		for (int i = 0; i < n; ++i)
+		{
+			scanf("%d", &C[i]);
+		}
+		fill_n(dp, MAX_N, -1);
+		dp[0] = 0;
+		forn(i, n) {
+			fore(j, 0, m) {
+				if(dp[j] > -1) {
+					//if it is valid
+					dp[j] = 0;
+				} else if(j >= A[i] && dp[j - A[i]] > -1 && dp[j - A[i]] < C[i]) {
+					dp[j] = dp[j-A[i]] + 1;
+				}
+			}
+		}
+		int ans = 0;
+		for1(i, m) {
+			if(dp[i] > -1) ans++;
+		}
+		cout << ans << endl;
+	}
 	return 0;
 }
+

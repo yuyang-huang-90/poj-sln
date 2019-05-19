@@ -1,4 +1,4 @@
-//mst
+//uf
 #include<vector>
 #include<list>
 #include<deque>
