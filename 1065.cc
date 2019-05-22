@@ -1,4 +1,4 @@
-//TYPE
+//greedy
 #include<vector>
 #include<list>
 #include<deque>
