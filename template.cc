@@ -48,6 +48,14 @@ const int MAX_M = 5000;
 typedef pair<int, int> P;
 
 int main() {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
+#endif
 	cout << "hello worlds" << endl;
+#ifndef ONLINE_JUDGE
+	fclose(stdin);
+	fclose(stdout);
+#endif
 	return 0;
 }
