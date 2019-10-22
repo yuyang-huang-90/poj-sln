@@ -1,4 +1,4 @@
-//TYPE
+//2 pointer 
 #include<vector>
 #include<list>
 #include<deque>
@@ -18,7 +18,7 @@
 #include<limits>
 #include<utility>
 
-#define c11
+//#define c11
 #ifdef c11
 #include<unordered_set>
 #include<unordered_map>
@@ -43,20 +43,53 @@ int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x3f3f3f3f;
 const int MAX_N = 30;
-const int MAX_M = 5000;
+const int MAX_M = 70000;
 
 typedef pair<ll, ll> P;
+P ans[MAX_M];
 
-int main() {
+int main()
+{
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("out.txt", "w", stdout);
 #endif
-//---------------------------------------------
-// YOUR CODE
+	ll n;
+	cin >> n;
+	ll l = 1, r = 1, sum = 0, cur = 0, cnt = 0;
+	for (;;)
+	{
+		while (sum < n)
+		{
+			cur = r * r;
+			sum += cur;
+			++r;
+		}
+		if (cur > n)
+		{
+			break;
+		}
 
+		if (sum == n)
+		{
+			ans[cnt].first = l;
+			ans[cnt++].second = r;
+		}
+		sum -= l * l;
+		l++;
+	}
 
-//---------------------------------------------
+	printf("%lld\n", cnt);
+	for (int i = 0; i < cnt; ++i)
+	{
+		l = ans[i].first;
+		r = ans[i].second;
+		printf("%lld", r - l);
+		for (ll j = l; j < r; ++j)
+			printf(" %lld", j);
+		printf("\n");
+	}
+
 #ifndef ONLINE_JUDGE
 	fclose(stdin);
 	fclose(stdout);
