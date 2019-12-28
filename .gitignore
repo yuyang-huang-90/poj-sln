@@ -7,3 +7,6 @@ test.sh
 *.o
 *.dSYM
 TODO
+.idea
+cmake-build-debug
+cmake-build-debug/
