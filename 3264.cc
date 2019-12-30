@@ -1,4 +1,4 @@
-//TYPE
+//segment tree
 #include<vector>
 #include<list>
 #include<deque>
