@@ -42,6 +42,7 @@ int dx[4] = {1, 0 , -1, 0};
 int dy[4] = {0, 1 , 0, -1};
 
 const int INF = 0x3f3f3f3f;
+const ll LINF = 0x3f3f3f3f3f3f3f3f;
 const int MAX_N = 30;
 const int MAX_M = 5000;
 
