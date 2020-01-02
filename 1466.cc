@@ -44,8 +44,8 @@ int dy[4] = {0, 1, 0, -1};
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3f;
-const int MAX_N = 300;
-const int MAX_M = 300;
+const int MAX_N = 600;
+const int MAX_M = 600;
 
 int match[MAX_N];
 int e[MAX_N][MAX_N];
@@ -56,6 +56,7 @@ typedef pair<ll, ll> P;
 int n1, n2;
 
 bool dfs(int u) {
+    // may need to change to forn for some case
     forn(v, n2) {
         if (e[u][v] && !checked[v]) {
             checked[v] = 1;
@@ -72,6 +73,7 @@ bool dfs(int u) {
 int hungarin() {
     int ans = 0;
     initn1(match);
+    // may need to change to forn for some case
     forn(i, n1) {
         initz(checked);
         if (dfs(i)) ++ans;
@@ -86,6 +88,20 @@ int main() {
 #endif
 //---------------------------------------------
 // YOUR CODE
+    int n;
+    while (scanf("%d", &n) != EOF && n != 0) {
+        n1 = n2 = n;
+        initz(e);
+        int i, j, t;
+        forn(k, n) {
+            scanf("%d: (%d)", &i, &t);
+            while (t--) {
+                scanf("%d", &j);
+                e[i][j] = 1;
+            }
+        };
+        cout << n - hungarin() / 2 << endl;
+    }
 //---------------------------------------------
 #ifndef ONLINE_JUDGE
     fclose(stdin);

@@ -56,7 +56,7 @@ typedef pair<ll, ll> P;
 int n1, n2;
 
 bool dfs(int u) {
-    forn(v, n2) {
+    for1(v, n2) {
         if (e[u][v] && !checked[v]) {
             checked[v] = 1;
             int w = match[v];
@@ -72,7 +72,7 @@ bool dfs(int u) {
 int hungarin() {
     int ans = 0;
     initn1(match);
-    forn(i, n1) {
+    for1(i, n1) {
         initz(checked);
         if (dfs(i)) ++ans;
     }
@@ -86,6 +86,21 @@ int main() {
 #endif
 //---------------------------------------------
 // YOUR CODE
+    int m, tc = 0;
+    while (scanf("%d%d%d", &n1, &n2, &m) != EOF && n1 + n2 + m > 0) {
+        for1(i, n1) {
+            for1(j, n2) {
+                e[i][j] = 1;
+            }
+        }
+
+        forn(i, m) {
+            int u, v;
+            scanf("%d%d", &u, &v);
+            e[u][v] = 0;
+        }
+        printf("Case %d: %d\n", ++tc, n1 + n2 - hungarin());
+    }
 //---------------------------------------------
 #ifndef ONLINE_JUDGE
     fclose(stdin);
