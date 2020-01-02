@@ -44,21 +44,22 @@ int dy[4] = {0, 1, 0, -1};
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3f;
-const int MAX_N = 300;
-const int MAX_M = 300;
+const int MAX_N = 500;
+const int MAX_M = 500;
 
 int match[MAX_N];
+int d[MAX_N][MAX_N];
 int e[MAX_N][MAX_N];
 int checked[MAX_N];
 
 typedef pair<ll, ll> P;
 
+int C, K, M;
 int n1, n2;
 
 bool dfs(int u) {
-    // may need to change to forn for some case
-    for1(v, n2) {
-        if (e[u][v] && !checked[v]) {
+    forn(v, n2) {
+        if (e[u][v] > 0 && !checked[v]) {
             checked[v] = 1;
             int w = match[v];
             if (w < 0 || dfs(w)) {
@@ -70,15 +71,36 @@ bool dfs(int u) {
     return false;
 }
 
-int hungarin() {
-    int ans = 0;
+bool hungarin() {
     initn1(match);
-    // may need to change to forn for some case
-    for1(i, n1) {
+    forn(i, n1) {
         initz(checked);
-        if (dfs(i)) ++ans;
+        if (!dfs(i)) return false;
     }
-    return ans;
+    return true;
+}
+
+void floyd(int n) {
+    forn(k, n) {
+        forn(i, n) {
+            forn(j, n) {
+                d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+            }
+        }
+    }
+}
+
+void build_graph(int g) {
+    initz(e);
+    forn(i, C) {
+        forn(j, K) {
+            if (d[K + i][j] <= g) {
+                for (int k = M * j; k < M * (j + 1); ++k) {
+                    e[i][k] = 1;
+                }
+            }
+        }
+    }
 }
 
 int main() {
@@ -88,6 +110,31 @@ int main() {
 #endif
 //---------------------------------------------
 // YOUR CODE
+    scanf("%d%d%d", &K, &C, &M);
+    int n = K + C;
+    forn(i, n) {
+        forn(j, n) {
+            scanf("%d", &d[i][j]);
+            if (!d[i][j]) d[i][j] = INF;
+        }
+    }
+    floyd(n);
+    n1 = C, n2 = K * M;
+    floyd(K + C);
+    int l, r, m;
+    l = 0;
+    r = (K + C) * 200;
+    while (l + 1 < r) {
+        m = (l + r) >> 1;
+        build_graph(m);
+        if (hungarin()) {
+            r = m;
+        } else {
+            l = m;
+        }
+    }
+    cout << r << endl;
+
 //---------------------------------------------
 #ifndef ONLINE_JUDGE
     fclose(stdin);
